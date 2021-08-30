@@ -2,7 +2,10 @@ package samus;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
-
+/**
+ * Двусвязный список, реализует интерфейс CustomList<T>,
+ * может хранить объекты любого типа.
+ */
 public class CustomListImpl <T> implements CustomList <T> {
 
     private int size;
@@ -20,12 +23,18 @@ public class CustomListImpl <T> implements CustomList <T> {
             this.prev = prev;
         }
     }
+    /**
+     * Конструктор пустого объекта.
+     */
 
     public CustomListImpl() {
         this.size = 0;
         this.first = this.last = new Node<T>(null, null, null);
     }
 
+    /**
+     * Конструктор объекта на основе Collection.
+     */
     public CustomListImpl(Collection<T> c) {
         nullCheck(c);
         CustomListImpl<T> customListImpl = new CustomListImpl<T>();
@@ -38,19 +47,31 @@ public class CustomListImpl <T> implements CustomList <T> {
 
     }
 
+    /**
+     * Возвращает размер связанного списка
+     */
     public int size() {
         return size;
     }
 
+    /**
+     * Проверяет связанный список на то, пустой ли он
+     */
     public boolean isEmpty() {
         return size == 0;
     }
 
+    /**
+     * Добавляет объект в список
+     */
     public boolean add(T item) {
         addLast(item);
         return true;
     }
 
+    /**
+     * Добавляет объекты списка типа Т в список
+     */
     public boolean addAll(T[] items) {
         nullCheck(items);
         for (T item : items)
@@ -59,6 +80,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return true;
     }
 
+    /**
+     * Добавляет объекты типа Collection в список
+     */
     public boolean addAll(Collection<T> items) {
         nullCheck(items);
         Object[] newData = items.toArray();
@@ -70,6 +94,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return true;
     }
 
+    /**
+     * Добавляет объекты списка типа Т в список по указанному индексу
+     */
     public boolean addAll(int index, T[] items) {
         nullCheck(items);
         rangeCheck(index);
@@ -100,6 +127,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return true;
     }
 
+    /**
+     * Добавляет объект списка типа Т на позицию связанного списка first.
+     */
     public void addFirst(T item) {
         final Node<T> f = first;
         final Node<T> newNode = new Node<T>(item, f.next, null);
@@ -111,6 +141,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         size++;
     }
 
+    /**
+     * Добавляет объект списка типа Т на позицию связанного списка last.
+     */
     public void addLast(T item) {
         final Node<T> l = last;
         final Node<T> newNode = new Node<T>(item, null, null);
@@ -127,16 +160,25 @@ public class CustomListImpl <T> implements CustomList <T> {
         size++;
     }
 
+    /**
+     * Добавляет объект списка типа Т на позицию связанного списка first.
+     */
     public boolean offerFirst(T item) {
         addFirst(item);
         return true;
     }
 
+    /**
+     * Добавляет объект списка типа Т на позицию связанного списка last.
+     */
     public boolean offerLast(T item) {
         addLast(item);
         return true;
     }
 
+    /**
+     * Возвращает объект связанного списка типа Т.
+     */
     public T get(int index) {
         rangeCheck(index);
         int i = 0;
@@ -153,6 +195,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return tmp.item;
     }
 
+    /**
+     * Возвращает объект связанного списка типа Т с позиции first.
+     */
     public T getFirst() {
         final Node<T> f = first.next;
         if (first.next == null) {
@@ -161,6 +206,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return first.item;
     }
 
+    /**
+     * Возвращает объект связанного списка типа Т с позиции last.
+     */
     public T getLast() {
         if (last == first || last == null) {
             throw new NoSuchElementException("last не существует!");
@@ -168,6 +216,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return last.item;
     }
 
+    /**
+     * Возвращает объект связанного списка типа Т с позиции first.
+     */
     public T peekFirst() {
         if (first.next == null) {
             return null;
@@ -175,6 +226,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return first.next.item;
     }
 
+    /**
+     * Возвращает объект связанного списка типа Т с позиции last.
+     */
     public T peekLast() {
         if (last == first || last == null) {
             return null;
@@ -182,6 +236,10 @@ public class CustomListImpl <T> implements CustomList <T> {
         return last.item;
     }
 
+    /**
+     * Заменяет объект по указанному индексу,
+     * возвращает удаленный объект списка.
+     */
     public T set(int index, T item) {
         rangeCheck(index);
         int i = 0;
@@ -199,6 +257,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return oldItem;
     }
 
+    /**
+     * Удаляет объект по указанному индексу.
+     */
     public void remove(int index) {
         rangeCheck(index);
         CustomListImpl<T> customListImpl = new CustomListImpl();
@@ -214,6 +275,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         first = customListImpl.first;
     }
 
+    /**
+     * Удаляет объект эквивалентный указанному.
+     */
     public boolean remove(T item) {
         CustomListImpl<T> customListImpl = new CustomListImpl();
         Node<T> tmp = first.next;
@@ -251,6 +315,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return result;
     }
 
+    /**
+     * Удаляет объект first из связанного списка.
+     */
     public T pollFirst() {
         Node<T> tmp = first.next;
         if (tmp == null) {
@@ -267,6 +334,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return tmp.item;
     }
 
+    /**
+     * Удаляет объект last из связанного списка.
+     */
     public T pollLast() {
         Node<T> tmp = last;
         if (last == null || last == first) {
@@ -284,6 +354,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return tmp.item;
     }
 
+    /**
+     * Удаляет объект first из связанного списка.
+     */
     public T removeFirst() {
         if (first.next == null) {
             throw new NoSuchElementException("first не существует!");
@@ -291,6 +364,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return pollFirst();
     }
 
+    /**
+     * Удаляет объект last из связанного списка.
+     */
     public T removeLast() {
         if (last == null || last == first) {
             throw new NoSuchElementException("last не существует!");
@@ -298,6 +374,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return pollLast();
     }
 
+    /**
+     * Проверяет наличие объекта в связанном списке.
+     */
     public boolean contains(T item) {
         return indexOf(item) != -1;
     }
@@ -316,6 +395,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         return -1;
     }
 
+    /**
+     * Отображает объекты связанного списка в обратном порядке.
+     */
     public void reverse() {
         CustomListImpl<T> customListImpl = new CustomListImpl<T>();
         Node<T> tmp = first.next;
@@ -326,6 +408,9 @@ public class CustomListImpl <T> implements CustomList <T> {
         first = customListImpl.first;
     }
 
+    /**
+     * Возвращает объекты связанного списка в виде массива.
+     */
     public Object[] toArray() {
         Object[] newData = new Object[size];
         Node<T> tmp = first.next;
@@ -352,12 +437,18 @@ public class CustomListImpl <T> implements CustomList <T> {
         return sb.toString();
     }
 
+    /**
+     * Проверяет передаваемый индекс на неотрицательность и выход за пределы списка.
+     */
     private void rangeCheck(int index) {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("" + index);
         }
     }
 
+    /**
+     * Проверяет передаваемый объект на null.
+     */
     private void nullCheck(Object obj) {
         if (obj == null) {
             throw new IllegalArgumentException("Объект для добавления не может быть null!");
